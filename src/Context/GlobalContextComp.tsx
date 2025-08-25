@@ -9,7 +9,7 @@ type apiStatesType = {
 }
 
 type WeatherAppDataType = {
-    theme: string;
+    userLocation: Boolean,
     apiStates: apiStatesType;
 };
 
@@ -28,7 +28,7 @@ type PropsType = {
 
 export default function GlobalContextComp({ children }: PropsType): ReactElement {
     const [weatherAppData, setWeatherAppData] = useState<WeatherAppDataType>({
-        theme: new Date().getHours() < 18 ? "light" : "dark",
+        userLocation: false,
         apiStates: {
             error: false,
             loading: true,

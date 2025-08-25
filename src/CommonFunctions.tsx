@@ -1,7 +1,7 @@
 import axios from "axios";
-import ThemeComponent from "./Components/ThemeComponent";
-import WeatherBar from "./Components/WeatherBar";
 import CurrentLocWeatherDataCard from "./Components/CurrentLocWeatherDataCard";
+import WeatherBar from "./Components/WeatherBar";
+import LoadingSpinner from "./Components/LoadingSpinner";
 
 type apiCall = {
     url: string,
@@ -11,41 +11,25 @@ type apiCall = {
     method?: string,
 }
 
-export const apis = {
-    allDataAPi: "https://wttr.in/?format=j1",
-    latLongApi: "",
-}
+// export const apis = {
+//     allDataAPi: "https://wttr.in/?format=j1",
+//     latLongApi: `https://wttr.in/${lat},${lon}/?format=j1`,
+// }
 
-export async function handleApiCall({
-    url = "",
-    apiStates = () => { },
-    params = {},
-    method = "GET"
-}: apiCall): Promise<object | Boolean> {
-    const response = await axios.get(url, {
-        method: method,
-    });
-    let data = {};
+export async function handleApiCall({ url = "", apiStates = () => { }, params = {}, method = "GET" }: apiCall): Promise<object | Boolean> {
+    const response = await axios.get(url, { method: method, });
+    apiStates({ loading: true, error: false, data: response?.data });
     if (response) {
-        data = response;
-        if (data) {
-            apiStates({ loading: false, error: false, data: data });
-        }
-        else {
-            apiStates({ loading: false, error: true, data: data });
-        }
+        response;
+        apiStates({ loading: false, error: false, data: response?.data });
     }
     else {
         apiStates({ loading: false, error: true, data: false });
     }
-    return data;
+    return response;
 }
 
 export const AllComponents = [
-    // {
-    //     name: "Theme",
-    //     component: ThemeComponent
-    // },
     {
         name: "WeatherBar",
         component: WeatherBar,
@@ -53,5 +37,13 @@ export const AllComponents = [
     {
         name: "CurrentLocationComp",
         component: CurrentLocWeatherDataCard,
+    },
+    {
+        name: "CurrentLocationComp",
+        component: CurrentLocWeatherDataCard,
+    },
+    {
+        name: "CurrentLocationComp",
+        component: LoadingSpinner,
     },
 ]

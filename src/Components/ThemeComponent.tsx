@@ -14,19 +14,19 @@ export default function ThemeComponent() {
     const { weatherAppData, setWeatherAppData } = context;
 
     function handleThemeToggle(theme: string) {
-        setWeatherAppData({ ...weatherAppData, theme: theme })
+        setWeatherAppData({ ...weatherAppData })
     }
 
     return (
         <div className='fixed top-1 right-1 w-fit rounded-2xl bg-stone-700 p-2 flex'>
             <div
-                className={`cursor-pointer text-orange-400 w-full rounded-full p-1 ${weatherAppData?.theme === "light" && "bg-neutral-300"}`}
+                className={`cursor-pointer text-orange-400 w-full rounded-full p-1`}
                 onClick={() => handleThemeToggle("light")}
             >
                 <LightModeIcon fontSize='large' />
             </div>
             <div
-                className={`cursor-pointer text-black w-full rounded-full p-1 ${weatherAppData?.theme === "dark" && "bg-stone-400"}`}
+                className={`cursor-pointer text-black w-full rounded-full p-1`}
                 onClick={() => handleThemeToggle("dark")}
             >
                 <DarkModeIcon fontSize='large' />

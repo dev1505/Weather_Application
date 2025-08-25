@@ -28,7 +28,7 @@ function App(): ReactElement {
 
   return (
     <>
-      <div className={`pt-16 md:pt-20 bg-white`}>
+      <div className={`pt-16 md:pt-20 bg-slate-500 h-full`}>
         <div className='flex flex-col wrap-break-word'>
           {
             AllComponents?.length > 0 ?
