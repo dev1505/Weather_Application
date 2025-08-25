@@ -6,7 +6,7 @@ export default function WeatherBar(): ReactElement {
     return (
         <div>
             <div
-                className='fixed top-0 flex py-4 px-5 w-screen items-center justify-evenly bg-gray-700 text-sm md:text-2xl text-white shadow shadow-2xl'
+                className='fixed top-0 flex py-4 px-5 z-50 w-screen items-center justify-evenly bg-gray-700 text-sm md:text-2xl text-white shadow shadow-2xl'
             >
                 <div
                     className='w-full'
