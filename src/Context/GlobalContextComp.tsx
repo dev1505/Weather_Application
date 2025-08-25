@@ -1,16 +1,16 @@
-import { createContext, useState, type ReactElement, type Dispatch, type SetStateAction } from "react";
-
+import { createContext, useState, type Dispatch, type ReactElement, type SetStateAction } from "react";
+import type { WeatherData } from "../types";
 // Define the shape of the context
 
-type apiStatesType = {
-    error: Boolean,
-    loading: Boolean,
-    data: object | Boolean,
-}
+type apiStatesType<T> = {
+    error: boolean;
+    loading: boolean;
+    data?: T;
+};
 
 type WeatherAppDataType = {
-    userLocation: Boolean,
-    apiStates: apiStatesType;
+    userLocation: boolean;
+    apiStates: apiStatesType<WeatherData>;
 };
 
 type ContextType = {
@@ -32,7 +32,6 @@ export default function GlobalContextComp({ children }: PropsType): ReactElement
         apiStates: {
             error: false,
             loading: true,
-            data: false,
         },
     });
 

@@ -1,33 +1,58 @@
 import axios from "axios";
+import type { Dispatch, SetStateAction } from "react";
 import CurrentLocWeatherDataCard from "./Components/CurrentLocWeatherDataCard";
+import DaysWeather from "./Components/DaysWeather";
 import WeatherBar from "./Components/WeatherBar";
-import LoadingSpinner from "./Components/LoadingSpinner";
 
-type apiCall = {
-    url: string,
-    params?: object,
-    apiKey?: string,
-    apiStates: Function,
-    method?: string,
+type ApiCallParams<T> = {
+    url: string;
+    params?: object;
+    method?: string;
+    setData: Dispatch<SetStateAction<{
+        userLocation: boolean;
+        apiStates: {
+            error: boolean;
+            loading: boolean;
+            data?: T;
+        };
+    }>>;
+};
+
+export async function handleApiCall<T>({ url, params = {}, method = "GET", setData, }: ApiCallParams<T>): Promise<void> {
+    setData(prevState => ({
+        ...prevState,
+        apiStates: {
+            ...prevState.apiStates,
+            loading: true,
+            error: false,
+        },
+    }));
+
+    try {
+        const response = await axios.request<T>({
+            url,
+            method,
+            params,
+        });
+        setData(prevState => ({
+            ...prevState,
+            apiStates: {
+                loading: false,
+                error: false,
+                data: response.data,
+            },
+        }));
+    } catch (error) {
+        setData(prevState => ({
+            ...prevState,
+            apiStates: {
+                loading: false,
+                error: true,
+            },
+        }));
+    }
 }
 
-// export const apis = {
-//     allDataAPi: "https://wttr.in/?format=j1",
-//     latLongApi: `https://wttr.in/${lat},${lon}/?format=j1`,
-// }
-
-export async function handleApiCall({ url = "", apiStates = () => { }, params = {}, method = "GET" }: apiCall): Promise<object | Boolean> {
-    const response = await axios.get(url, { method: method, });
-    apiStates({ loading: true, error: false, data: response?.data });
-    if (response) {
-        response;
-        apiStates({ loading: false, error: false, data: response?.data });
-    }
-    else {
-        apiStates({ loading: false, error: true, data: false });
-    }
-    return response;
-}
 
 export const AllComponents = [
     {
@@ -39,11 +64,7 @@ export const AllComponents = [
         component: CurrentLocWeatherDataCard,
     },
     {
-        name: "CurrentLocationComp",
-        component: CurrentLocWeatherDataCard,
+        name: "3DaysWeather",
+        component: DaysWeather,
     },
-    {
-        name: "CurrentLocationComp",
-        component: LoadingSpinner,
-    },
-]
+];
