@@ -1,9 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
+import "./index.css"
+import GlobalContextComp from './Context/GlobalContextComp.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+  // <StrictMode>
+  <GlobalContextComp>
     <App />
-  </StrictMode>,
+  </GlobalContextComp>
+  // </StrictMode>,
 )

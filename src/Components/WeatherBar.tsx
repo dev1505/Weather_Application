@@ -1,0 +1,34 @@
+import { type ReactElement } from 'react'
+import { FaSearchLocation } from "react-icons/fa";
+import { FaLocationCrosshairs } from "react-icons/fa6";
+
+export default function WeatherBar(): ReactElement {
+    return (
+        <div>
+            <div
+                className='fixed top-0 flex py-4 px-5 w-screen items-center justify-evenly bg-gray-700 text-sm md:text-2xl text-white shadow shadow-2xl'
+            >
+                <div
+                    className='w-full'
+                >
+                    Weather Info
+                </div>
+                <div
+                    onClick={() => { document.getElementById("locationSearch")?.focus() }}
+                    className='w-full focus-within:border focus-within:border-gray-400 rounded flex px-2 items-center bg-gray-600'
+                >
+                    <FaSearchLocation
+                        className='bg-gray-900 rounded text-blue-200 p-1 text-2xl md:text-3xl'
+                    />
+                    <input
+                        id="locationSearch"
+                        type="text"
+                        className='w-full m-2 outline-0'
+                        placeholder='Enter Location'
+                    />
+                    <FaLocationCrosshairs />
+                </div>
+            </div>
+        </div>
+    )
+}

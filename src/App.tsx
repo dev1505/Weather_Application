@@ -1,12 +1,51 @@
-import Test from './Components/Test'
+import { useContext, useEffect, type ReactElement } from 'react';
+import { AllComponents, handleApiCall } from './CommonFunctions';
+import { GlobalContext } from './Context/GlobalContextComp';
 
-function App() {
+function App(): ReactElement {
+
+  const context = useContext(GlobalContext);
+
+  if (!context) {
+    return <div></div>;
+  }
+
+  const { weatherAppData, setWeatherAppData } = context;
+
+  useEffect(() => {
+
+    handleApiCall({
+      url: "https://wttr.in/?format=j1",
+      apiStates: (data: any) => {
+        setWeatherAppData({
+          ...weatherAppData,
+          apiStates: data
+        })
+      }
+    })
+
+  }, [])
 
   return (
     <>
-      <Test a={20} />
+      <div className={`pt-16 md:pt-20 bg-white`}>
+        <div className='flex flex-col wrap-break-word'>
+          {
+            AllComponents?.length > 0 ?
+              AllComponents?.map((data, index) => {
+                const Component = data?.component;
+                return (
+                  <div key={index}>
+                    <Component />
+                  </div>
+                )
+              })
+              : ""
+          }
+        </div>
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
