@@ -8,7 +8,7 @@ export default function MainPageComponent(): ReactElement {
     const { setWeatherAppData, weatherAppData } = useGlobalContext();
 
     useEffect(() => {
-
+        console.log("helllllllllll");
         let url = "";
         if (!weatherAppData?.userLocation) {
             url = "https://wttr.in/?format=j1";
@@ -35,7 +35,7 @@ export default function MainPageComponent(): ReactElement {
 
     return (
         <div>
-            <div className={`pt-16 md:pt-20 h-dvh`}>
+            <div className={`pt-28 md:pt-20 h-dvh`}>
                 <div className='flex flex-col wrap-break-word'>
                     {
                         AllComponents?.length > 0 ?

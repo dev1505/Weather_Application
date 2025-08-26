@@ -1,4 +1,4 @@
-import { createContext, useState, type Dispatch, type ReactElement, type SetStateAction } from "react";
+import { createContext, useRef, useState, type Dispatch, type ReactElement, type RefObject, type SetStateAction } from "react";
 import type { WeatherData } from "../types";
 // Define the shape of the context
 
@@ -19,9 +19,16 @@ type WeatherAppDataType = {
     apiStates: apiStatesType<WeatherData>;
 };
 
+type UserSearchType = {
+    placeId: number;
+    lat: string;
+    lon: string;
+}
+
 type ContextType = {
     weatherAppData: WeatherAppDataType;
     setWeatherAppData: Dispatch<SetStateAction<WeatherAppDataType>>;
+    userSearch: RefObject<UserSearchType>;
 };
 
 // Create the context with default `undefined` to force consumer checks
@@ -47,8 +54,10 @@ export default function GlobalContextComp({ children }: PropsType): ReactElement
         },
     });
 
+    const userSearch = useRef<UserSearchType>({ placeId: 0, lat: "", lon: "" });
+
     return (
-        <GlobalContext.Provider value={{ weatherAppData, setWeatherAppData }}>
+        <GlobalContext.Provider value={{ weatherAppData, setWeatherAppData, userSearch }}>
             {children}
         </GlobalContext.Provider>
     );
