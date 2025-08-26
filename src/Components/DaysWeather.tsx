@@ -11,7 +11,7 @@ const formatTime = (time: string): string => {
 
 export default function DaysWeather(): ReactElement {
     const { weatherAppData } = useGlobalContext();
-    const { loading, error, data } = weatherAppData?.apiStates;
+    const { loading, error, data } = weatherAppData.apiStates;
     const [selectedDayIndex, setSelectedDayIndex] = useState(0);
 
     if (loading) {

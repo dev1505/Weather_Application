@@ -6,6 +6,7 @@ import LoadingSkeletonCard from './LoadingSkeletonCard';
 
 export default function MainPageComponent(): ReactElement {
     const { setWeatherAppData, weatherAppData } = useGlobalContext();
+    const { error, loading, data } = weatherAppData.apiStates;
 
     useEffect(() => {
         let url = "";
@@ -15,14 +16,14 @@ export default function MainPageComponent(): ReactElement {
         else {
             url = `https://wttr.in/${weatherAppData?.userCoords?.lat},${weatherAppData?.userCoords?.lon}?format=j1`;
         }
-        handleFetchCurrentLocWeather<WeatherData>({
-            url: url,
-            setData: setWeatherAppData,
-        });
-
+        if (!data?.current_condition?.length) {
+            handleFetchCurrentLocWeather<WeatherData>({
+                url: url,
+                setData: setWeatherAppData,
+            });
+        }
     }, [weatherAppData?.userLocation]);
 
-    const { error, loading } = weatherAppData.apiStates;
 
     if (loading) {
         return <div><LoadingSkeletonCard /></div>

@@ -42,7 +42,7 @@ export async function handleFetchCurrentLocWeather<T>({ url, params = {}, method
                 data: response.data,
             },
         }));
-    } catch (error) {
+    } catch {
         setData(prevState => ({
             ...prevState,
             apiStates: {
