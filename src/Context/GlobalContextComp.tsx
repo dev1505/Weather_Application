@@ -1,4 +1,4 @@
-import { createContext, useRef, useState, type Dispatch, type ReactElement, type RefObject, type SetStateAction } from "react";
+import { createContext, useState, type Dispatch, type ReactElement, type SetStateAction } from "react";
 import type { WeatherData } from "../types";
 // Define the shape of the context
 

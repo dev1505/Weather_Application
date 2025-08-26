@@ -18,11 +18,6 @@ type CurrentLocWeatherParams<T> = {
     }>>;
 };
 
-type SearchLocWeatherParams = {
-    url: string;
-    method: string;
-}
-
 export async function handleFetchCurrentLocWeather<T>({ url, params = {}, method = "GET", setData, }: CurrentLocWeatherParams<T>): Promise<void> {
     setData(prevState => ({
         ...prevState,
