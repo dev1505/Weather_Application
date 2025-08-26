@@ -11,35 +11,10 @@ import {
   FaTint,
   FaWind,
 } from "react-icons/fa";
-import Rainy from "../Images/Rainy.jpg";
-import Sunny from "../Images/Sunny.jpg";
-import Winter from "../Images/Winter.jpg";
 import { useGlobalContext } from "../hooks/useGlobalContext";
+import { weatherCodes } from "../types";
 
 // Mapping of weather descriptions to images
-const weatherImages: { [key: string]: string } = {
-  "rain": Rainy,
-  "sunny": Sunny,
-  "clear": Sunny,
-  "winter": Winter,
-  "snow": Winter,
-  "cloudy": Rainy,
-  "overcast": Rainy,
-  "mist": Rainy,
-  "drizzle": Rainy,
-};
-
-// Function to get the appropriate image based on weather description
-const getWeatherImage = (weatherDesc: string): string => {
-  const lowerCaseDesc = weatherDesc.toLowerCase();
-  for (const key in weatherImages) {
-    if (lowerCaseDesc.includes(key)) {
-      return weatherImages[key];
-    }
-  }
-  return Rainy; // Default image
-};
-
 export default function CurrentLocWeatherDataCard(): ReactElement {
   const { weatherAppData } = useGlobalContext();
   const { error, data } = weatherAppData.apiStates;
@@ -53,7 +28,7 @@ export default function CurrentLocWeatherDataCard(): ReactElement {
   const todayWeather = data.weather[0];
 
   const weatherDesc = currentCondition.weatherDesc[0].value;
-  const backgroundImage = getWeatherImage(weatherDesc);
+  const backgroundImage = weatherCodes[data?.current_condition[0]?.weatherCode].image;
 
   const weatherIcons: { [key: string]: ReactElement } = {
     "rain": <FaTint />,

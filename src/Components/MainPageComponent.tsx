@@ -8,7 +8,6 @@ export default function MainPageComponent(): ReactElement {
     const { setWeatherAppData, weatherAppData } = useGlobalContext();
 
     useEffect(() => {
-        console.log("helllllllllll");
         let url = "";
         if (!weatherAppData?.userLocation) {
             url = "https://wttr.in/?format=j1";

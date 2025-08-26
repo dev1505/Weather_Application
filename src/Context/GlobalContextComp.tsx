@@ -19,16 +19,9 @@ type WeatherAppDataType = {
     apiStates: apiStatesType<WeatherData>;
 };
 
-type UserSearchType = {
-    placeId: number;
-    lat: string;
-    lon: string;
-}
-
 type ContextType = {
     weatherAppData: WeatherAppDataType;
     setWeatherAppData: Dispatch<SetStateAction<WeatherAppDataType>>;
-    userSearch: RefObject<UserSearchType>;
 };
 
 // Create the context with default `undefined` to force consumer checks
@@ -54,10 +47,8 @@ export default function GlobalContextComp({ children }: PropsType): ReactElement
         },
     });
 
-    const userSearch = useRef<UserSearchType>({ placeId: 0, lat: "", lon: "" });
-
     return (
-        <GlobalContext.Provider value={{ weatherAppData, setWeatherAppData, userSearch }}>
+        <GlobalContext.Provider value={{ weatherAppData, setWeatherAppData }}>
             {children}
         </GlobalContext.Provider>
     );

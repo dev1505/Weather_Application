@@ -1,9 +1,9 @@
-import { useState, type ReactElement, useCallback } from 'react';
+import debounce from 'lodash.debounce';
+import { useCallback, useState, type ReactElement } from 'react';
 import { FaSearchLocation } from "react-icons/fa";
 import { FaLocationCrosshairs } from "react-icons/fa6";
-import { useGlobalContext } from '../hooks/useGlobalContext';
-import debounce from 'lodash.debounce';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalContext } from '../hooks/useGlobalContext';
 
 interface NominatimResult {
     place_id: number;
@@ -21,11 +21,12 @@ interface NominatimResult {
 }
 
 export default function WeatherBar(): ReactElement {
-    const { weatherAppData, setWeatherAppData, userSearch } = useGlobalContext();
+    const { weatherAppData, setWeatherAppData } = useGlobalContext();
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState<NominatimResult[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     function handleCurrentLocation() {
         navigator.geolocation.getCurrentPosition((data) => {
@@ -72,12 +73,9 @@ export default function WeatherBar(): ReactElement {
         debouncedFetchLocations(query);
     };
 
-    const navigate = useNavigate();
-
     const handleResultClick = (result: NominatimResult) => {
+        navigate(`/location/${result.lat}/${result.lon}`);
         setSearchQuery(result.display_name);
-        userSearch.current = { lat: result.lat, lon: result.lon, placeId: result.place_id };
-        navigate(`/${result.place_id}`);
         setSearchResults([]);
     };
 
