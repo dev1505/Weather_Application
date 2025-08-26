@@ -8,8 +8,14 @@ type apiStatesType<T> = {
     data?: T;
 };
 
+type userCoords = {
+    lat: number;
+    lon: number;
+}
+
 type WeatherAppDataType = {
     userLocation: boolean;
+    userCoords ?: userCoords
     apiStates: apiStatesType<WeatherData>;
 };
 

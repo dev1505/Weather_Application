@@ -1,21 +1,20 @@
 import { type ReactElement } from "react";
+import {
+  FaCloud,
+  FaCloudSun,
+  FaEye,
+  FaMoon,
+  FaSnowflake,
+  FaSun,
+  FaTachometerAlt,
+  FaThermometerHalf,
+  FaTint,
+  FaWind,
+} from "react-icons/fa";
 import Rainy from "../Images/Rainy.jpg";
 import Sunny from "../Images/Sunny.jpg";
 import Winter from "../Images/Winter.jpg";
 import { useGlobalContext } from "../hooks/useGlobalContext";
-import {
-  FaSun,
-  FaCloud,
-  FaTint,
-  FaSnowflake,
-  FaThermometerHalf,
-  FaWind,
-  FaEye,
-  FaTachometerAlt,
-  FaCloudSun,
-  FaMoon,
-} from "react-icons/fa";
-import LoadingSpinner from "./LoadingSpinner";
 
 // Mapping of weather descriptions to images
 const weatherImages: { [key: string]: string } = {
@@ -43,15 +42,7 @@ const getWeatherImage = (weatherDesc: string): string => {
 
 export default function CurrentLocWeatherDataCard(): ReactElement {
   const { weatherAppData } = useGlobalContext();
-  const { loading, error, data } = weatherAppData.apiStates;
-
-  if (loading) {
-    return (
-      <div className="p-4 md:p-8 h-screen flex items-center justify-center">
-        <LoadingSpinner />
-      </div>
-    );
-  }
+  const { error, data } = weatherAppData.apiStates;
 
   if (error || !data) {
     return <div>Error loading data</div>;
@@ -87,7 +78,7 @@ export default function CurrentLocWeatherDataCard(): ReactElement {
   };
 
   return (
-    <div className="p-4 md:p-8">
+    <div className="bg-gray-800 p-4 md:p-8">
       <div className="relative rounded-2xl overflow-hidden h-full">
         <div>
           <img
