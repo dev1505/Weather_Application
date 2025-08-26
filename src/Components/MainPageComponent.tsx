@@ -1,8 +1,8 @@
 import { useEffect, type ReactElement } from 'react';
-import { AllComponents, handleApiCall } from '../CommonFunctions';
+import { AllComponents, handleFetchCurrentLocWeather } from '../CommonFunctions';
 import { useGlobalContext } from '../hooks/useGlobalContext';
 import type { WeatherData } from '../types';
-import LoadingSpinner from './LoadingSpinner';
+import LoadingSkeletonCard from './LoadingSkeletonCard';
 
 export default function MainPageComponent(): ReactElement {
     const { setWeatherAppData, weatherAppData } = useGlobalContext();
@@ -16,19 +16,21 @@ export default function MainPageComponent(): ReactElement {
         else {
             url = `https://wttr.in/${weatherAppData?.userCoords?.lat},${weatherAppData?.userCoords?.lon}?format=j1`;
         }
-        handleApiCall<WeatherData>({
+        handleFetchCurrentLocWeather<WeatherData>({
             url: url,
             setData: setWeatherAppData,
         });
 
     }, [weatherAppData?.userLocation]);
 
-    if (weatherAppData?.apiStates?.loading) {
-        return (
-            <div>
-                <LoadingSpinner />
-            </div>
-        )
+    const { error, loading } = weatherAppData.apiStates;
+
+    if (loading) {
+        return <div><LoadingSkeletonCard /></div>
+    }
+
+    if (error) {
+        return <div>Error loading data</div>;
     }
 
     return (

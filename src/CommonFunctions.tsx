@@ -4,7 +4,7 @@ import CurrentLocWeatherDataCard from "./Components/CurrentLocWeatherDataCard";
 import DaysWeather from "./Components/DaysWeather";
 import WeatherBar from "./Components/WeatherBar";
 
-type ApiCallParams<T> = {
+type CurrentLocWeatherParams<T> = {
     url: string;
     params?: object;
     method?: string;
@@ -18,7 +18,12 @@ type ApiCallParams<T> = {
     }>>;
 };
 
-export async function handleApiCall<T>({ url, params = {}, method = "GET", setData, }: ApiCallParams<T>): Promise<void> {
+type SearchLocWeatherParams = {
+    url: string;
+    method: string;
+}
+
+export async function handleFetchCurrentLocWeather<T>({ url, params = {}, method = "GET", setData, }: CurrentLocWeatherParams<T>): Promise<void> {
     setData(prevState => ({
         ...prevState,
         apiStates: {

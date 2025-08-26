@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react';
+import { useState, type ReactElement } from 'react';
 import { FaSearchLocation } from "react-icons/fa";
 import { FaLocationCrosshairs } from "react-icons/fa6";
 import { useGlobalContext } from '../hooks/useGlobalContext';
@@ -23,6 +23,12 @@ export default function WeatherBar(): ReactElement {
         })
     }
 
+    const [weatherBarData, setWeatherBarData] = useState({ search: false, locLoading: false, locError: false, searchedData: [] });
+
+    function handleSearching() {
+
+    }
+
     return (
         <div>
             <div
@@ -45,6 +51,7 @@ export default function WeatherBar(): ReactElement {
                         type="text"
                         className='w-full m-2 outline-0'
                         placeholder='Enter Location'
+                        onChange={handleSearching}
                     />
                     <FaLocationCrosshairs
                         className='cursor-pointer'

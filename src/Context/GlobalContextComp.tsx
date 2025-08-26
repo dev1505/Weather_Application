@@ -15,7 +15,7 @@ type userCoords = {
 
 type WeatherAppDataType = {
     userLocation: boolean;
-    userCoords ?: userCoords
+    userCoords?: userCoords
     apiStates: apiStatesType<WeatherData>;
 };
 
@@ -38,6 +38,12 @@ export default function GlobalContextComp({ children }: PropsType): ReactElement
         apiStates: {
             error: false,
             loading: true,
+            data: {
+                current_condition: [],
+                nearest_area: [],
+                request: [],
+                weather: [],
+            }
         },
     });
 
