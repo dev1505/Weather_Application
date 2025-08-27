@@ -1,44 +1,6 @@
 import { useEffect, useState, type ReactElement } from 'react';
 import { useParams } from 'react-router-dom';
-
-interface WeatherData {
-    current_condition: {
-        FeelsLikeC: string;
-        temp_C: string;
-        weatherDesc: { value: string }[];
-        windspeedKmph: string;
-        humidity: string;
-        pressure: string;
-        visibility: string;
-        uvIndex: string;
-    }[];
-    nearest_area: {
-        areaName: { value: string }[];
-        country: { value: string }[];
-        region: { value: string }[];
-    }[];
-    weather: {
-        date: string;
-        astronomy: {
-            sunrise: string;
-            sunset: string;
-            moonrise: string;
-            moonset: string;
-            moon_phase: string;
-            moon_illumination: string;
-        }[];
-        maxtempC: string;
-        mintempC: string;
-        hourly: {
-            time: string;
-            tempC: string;
-            weatherDesc: { value: string }[];
-            windspeedKmph: string;
-            humidity: string;
-            chanceofrain: string;
-        }[];
-    }[];
-}
+import { weatherCodes, type WeatherData } from '../types';
 
 export default function LocationDetailPage(): ReactElement {
     const { lat, lon } = useParams<{ lat: string; lon: string }>();
@@ -71,7 +33,7 @@ export default function LocationDetailPage(): ReactElement {
     }, [lat, lon]);
 
     if (loading) {
-        return <div className="flex justify-center items-center h-screen bg-gray-900 text-white">Loading...</div>;
+        return <div className="flex justify-center items-center h-screen bg-gray-900 text-white">Your Searched Location Data is Loading...</div>;
     }
 
     if (error) {
@@ -103,7 +65,7 @@ export default function LocationDetailPage(): ReactElement {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                    <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <div className="bg-gray-800 p-6 rounded-lg shadow-lg" style={{ backgroundImage: `url(${weatherCodes[current?.weatherCode].image})`, objectFit: "cover" }}>
                         <h2 className="text-2xl font-semibold mb-4">Current Weather</h2>
                         <div className="flex justify-between items-center">
                             <p className="text-6xl font-bold">{current.temp_C}°C</p>

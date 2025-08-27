@@ -83,7 +83,7 @@ export default function WeatherBar(): ReactElement {
         <div className="relative">
             <div className='fixed top-0 flex flex-col gap-2 md:flex-row py-4 px-5 z-50 w-full items-center justify-evenly bg-gray-700 text-xl  md:text-2xl text-white shadow-2xl'>
                 <div className='w-full text-center md:text-left'>
-                    Weather Info
+                    Climactic
                 </div>
                 <div className='w-full relative'>
                     <div className='focus-within:border focus-within:border-gray-400 rounded flex px-2 items-center bg-gray-600'>
@@ -101,23 +101,25 @@ export default function WeatherBar(): ReactElement {
                             onClick={handleCurrentLocation}
                         />
                     </div>
-                    {(searchResults.length > 0 || isLoading || error) && (
-                        <div className="absolute top-full left-0 right-0 bg-gray-600 mt-1 rounded-md shadow-lg z-50 max-h-80 overflow-y-auto">
-                            {isLoading && <div className="p-4 text-center">Loading...</div>}
-                            {error && <div className="p-4 text-center text-red-400">{error}</div>}
-                            <ul>
-                                {searchResults.map((result) => (
-                                    <li
-                                        key={result.place_id}
-                                        className="p-4 text-xl border-b border-b-gray-400 cursor-pointer hover:bg-gray-500"
-                                        onClick={() => handleResultClick(result)}
-                                    >
-                                        {result.display_name}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
+                    {
+                        (searchResults.length > 0 || isLoading || error) && (
+                            <div className="absolute top-full left-0 right-0 bg-gray-600 mt-1 rounded-md shadow-lg z-50 max-h-80 overflow-y-auto">
+                                {isLoading && <div className="p-4 text-center">Loading...</div>}
+                                {error && <div className="p-4 text-center text-red-400">{error}</div>}
+                                <ul>
+                                    {searchResults.map((result) => (
+                                        <li
+                                            key={result.place_id}
+                                            className="p-4 text-xl border-b border-b-gray-400 cursor-pointer hover:bg-gray-500"
+                                            onClick={() => handleResultClick(result)}
+                                        >
+                                            {result.display_name}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )
+                    }
                 </div>
             </div>
         </div>

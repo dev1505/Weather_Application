@@ -2,11 +2,10 @@ import { useEffect, type ReactElement } from 'react';
 import { AllComponents, handleFetchCurrentLocWeather } from '../CommonFunctions';
 import { useGlobalContext } from '../hooks/useGlobalContext';
 import type { WeatherData } from '../types';
-import LoadingSkeletonCard from './LoadingSkeletonCard';
 
 export default function MainPageComponent(): ReactElement {
     const { setWeatherAppData, weatherAppData } = useGlobalContext();
-    const { error, loading, data } = weatherAppData.apiStates;
+    const { error, loading } = weatherAppData.apiStates;
 
     useEffect(() => {
         let url = "";
@@ -16,21 +15,18 @@ export default function MainPageComponent(): ReactElement {
         else {
             url = `https://wttr.in/${weatherAppData?.userCoords?.lat},${weatherAppData?.userCoords?.lon}?format=j1`;
         }
-        if (!data?.current_condition?.length) {
-            handleFetchCurrentLocWeather<WeatherData>({
-                url: url,
-                setData: setWeatherAppData,
-            });
-        }
+        handleFetchCurrentLocWeather<WeatherData>({
+            url: url,
+            setData: setWeatherAppData,
+        });
     }, [weatherAppData?.userLocation]);
 
-
     if (loading) {
-        return <div><LoadingSkeletonCard /></div>
+        return <div className="flex justify-center items-center h-screen bg-gray-900 text-white text-xl">Your Data is Loading...</div>;
     }
 
     if (error) {
-        return <div>Error loading data</div>;
+        return <div className='flex justify-center items-center h-screen bg-gray-900 text-white text-xl'>Error loading data</div>;
     }
 
     return (
