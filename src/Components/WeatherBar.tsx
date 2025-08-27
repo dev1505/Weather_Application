@@ -92,7 +92,7 @@ export default function WeatherBar(): ReactElement {
                 </div>
                 <div className='w-full relative'>
                     <div className='focus-within:border focus-within:border-gray-400 rounded flex px-2 items-center bg-gray-600'>
-                        <FaSearchLocation className='bg-gray-900 rounded text-blue-200 p-1 text-3xl md:text-4xl' />
+                        <FaSearchLocation className=' rounded text-white p-1 text-3xl md:text-4xl' />
                         <input
                             id="locationSearch"
                             type="text"
