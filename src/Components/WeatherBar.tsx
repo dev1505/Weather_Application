@@ -1,5 +1,4 @@
-import debounce from 'lodash.debounce';
-import { useCallback, useState, type ReactElement } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { FaSearchLocation } from "react-icons/fa";
 import { FaLocationCrosshairs } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
@@ -43,34 +42,40 @@ export default function WeatherBar(): ReactElement {
         });
     }
 
-    const fetchLocations = async (query: string) => {
-        if (query.trim() === "") {
-            setSearchResults([]);
-            return;
-        }
-        setIsLoading(true);
-        setError(null);
-        try {
-            const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json`);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+    useEffect(() => {
+        const fetchLocations = async () => {
+            if (searchQuery.trim() === "") {
+                setSearchResults([]);
+                return;
             }
-            const data: NominatimResult[] = await response.json();
-            setSearchResults(data);
-        } catch (error) {
-            setError("Failed to fetch locations.");
-            console.error("Error fetching locations:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+            setIsLoading(true);
+            setError(null);
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${searchQuery}&format=json`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data: NominatimResult[] = await response.json();
+                setSearchResults(data);
+            } catch (error) {
+                setError("Failed to fetch locations.");
+                console.error("Error fetching locations:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
 
-    const debouncedFetchLocations = useCallback(debounce(fetchLocations, 500), []);
+        const timerId = setTimeout(() => {
+            fetchLocations();
+        }, 500);
+
+        return () => {
+            clearTimeout(timerId);
+        };
+    }, [searchQuery]);
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const query = e.target.value;
-        setSearchQuery(query);
-        debouncedFetchLocations(query);
+        setSearchQuery(e.target.value);
     };
 
     const handleResultClick = (result: NominatimResult) => {

@@ -17,6 +17,7 @@ type WeatherAppDataType = {
     userLocation: boolean;
     userCoords?: userCoords
     apiStates: apiStatesType<WeatherData>;
+    searched: { [key: string]: WeatherData };
 };
 
 type ContextType = {
@@ -25,6 +26,7 @@ type ContextType = {
 };
 
 // Create the context with default `undefined` to force consumer checks
+// eslint-disable-next-line react-refresh/only-export-components
 export const GlobalContext = createContext<ContextType | undefined>(undefined);
 
 // Props for the provider
@@ -45,6 +47,7 @@ export default function GlobalContextComp({ children }: PropsType): ReactElement
                 weather: [],
             }
         },
+        searched: {},
     });
 
     return (

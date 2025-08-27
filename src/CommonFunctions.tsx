@@ -3,22 +3,16 @@ import type { Dispatch, SetStateAction } from "react";
 import CurrentLocWeatherDataCard from "./Components/CurrentLocWeatherDataCard";
 import DaysWeather from "./Components/DaysWeather";
 import WeatherBar from "./Components/WeatherBar";
+import type { WeatherAppDataType, WeatherData } from "./types";
 
-type CurrentLocWeatherParams<T> = {
+type CurrentLocWeatherParams = {
     url: string;
     params?: object;
     method?: string;
-    setData: Dispatch<SetStateAction<{
-        userLocation: boolean;
-        apiStates: {
-            error: boolean;
-            loading: boolean;
-            data?: T;
-        };
-    }>>;
+    setData: Dispatch<SetStateAction<WeatherAppDataType>>;
 };
 
-export async function handleFetchCurrentLocWeather<T>({ url, params = {}, method = "GET", setData, }: CurrentLocWeatherParams<T>): Promise<void> {
+export async function handleFetchCurrentLocWeather({ url, params = {}, method = "GET", setData, }: CurrentLocWeatherParams): Promise<void> {
     setData(prevState => ({
         ...prevState,
         apiStates: {
@@ -29,7 +23,7 @@ export async function handleFetchCurrentLocWeather<T>({ url, params = {}, method
     }));
 
     try {
-        const response = await axios.request<T>({
+        const response = await axios.request<WeatherData>({
             url,
             method,
             params,
@@ -46,6 +40,7 @@ export async function handleFetchCurrentLocWeather<T>({ url, params = {}, method
         setData(prevState => ({
             ...prevState,
             apiStates: {
+                ...prevState.apiStates,
                 loading: false,
                 error: true,
             },

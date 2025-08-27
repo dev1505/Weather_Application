@@ -4,12 +4,11 @@ import {
   FaCloudSun,
   FaEye,
   FaMoon,
-  FaSnowflake,
   FaSun,
   FaTachometerAlt,
   FaThermometerHalf,
   FaTint,
-  FaWind,
+  FaWind
 } from "react-icons/fa";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import { weatherCodes } from "../types";
@@ -30,27 +29,7 @@ export default function CurrentLocWeatherDataCard(): ReactElement {
   const weatherDesc = currentCondition.weatherDesc[0].value;
   const backgroundImage = weatherCodes[data?.current_condition[0]?.weatherCode].image;
 
-  const weatherIcons: { [key: string]: ReactElement } = {
-    "rain": <FaTint />,
-    "sunny": <FaSun />,
-    "clear": <FaSun />,
-    "cloudy": <FaCloud />,
-    "snow": <FaSnowflake />,
-    "overcast": <FaCloud />,
-    "mist": <FaTint />,
-    "drizzle": <FaTint />,
-    "default": <FaThermometerHalf />,
-  };
-
-  const getWeatherIcon = (weatherDesc: string) => {
-    const lowerCaseDesc = weatherDesc.toLowerCase();
-    for (const key in weatherIcons) {
-      if (lowerCaseDesc.includes(key)) {
-        return weatherIcons[key];
-      }
-    }
-    return weatherIcons["default"];
-  };
+  const Icon = weatherCodes[currentCondition?.weatherCode].icon;
 
   return (
     <div className="bg-gray-800 p-4 md:p-8">
@@ -73,7 +52,7 @@ export default function CurrentLocWeatherDataCard(): ReactElement {
               </div>
               <div className="text-right">
                 <div className="flex items-center text-2xl">
-                  {getWeatherIcon(weatherDesc)}
+                  <Icon />
                   <span className="ml-2">{weatherDesc}</span>
                 </div>
               </div>

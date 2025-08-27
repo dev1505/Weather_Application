@@ -1,7 +1,6 @@
 import { useEffect, type ReactElement } from 'react';
 import { AllComponents, handleFetchCurrentLocWeather } from '../CommonFunctions';
 import { useGlobalContext } from '../hooks/useGlobalContext';
-import type { WeatherData } from '../types';
 
 export default function MainPageComponent(): ReactElement {
     const { setWeatherAppData, weatherAppData } = useGlobalContext();
@@ -15,11 +14,11 @@ export default function MainPageComponent(): ReactElement {
         else {
             url = `https://wttr.in/${weatherAppData?.userCoords?.lat},${weatherAppData?.userCoords?.lon}?format=j1`;
         }
-        handleFetchCurrentLocWeather<WeatherData>({
+        handleFetchCurrentLocWeather({
             url: url,
             setData: setWeatherAppData,
         });
-    }, [weatherAppData?.userLocation]);
+    }, [weatherAppData?.userLocation, weatherAppData?.userCoords?.lat, weatherAppData?.userCoords?.lon, setWeatherAppData]);
 
     if (loading) {
         return <div className="flex justify-center items-center h-screen bg-gray-900 text-white text-xl">Your Data is Loading...</div>;

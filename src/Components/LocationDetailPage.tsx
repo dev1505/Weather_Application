@@ -1,9 +1,12 @@
 import { useEffect, useState, type ReactElement } from 'react';
 import { useParams } from 'react-router-dom';
 import { weatherCodes, type WeatherData } from '../types';
+import { useGlobalContext } from '../hooks/useGlobalContext';
+import axios from 'axios';
 
 export default function LocationDetailPage(): ReactElement {
     const { lat, lon } = useParams<{ lat: string; lon: string }>();
+    const { weatherAppData, setWeatherAppData } = useGlobalContext();
     const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -13,12 +16,19 @@ export default function LocationDetailPage(): ReactElement {
             setLoading(true);
             setError(null);
             try {
-                const response = await fetch(`https://wttr.in/${lat},${lon}?format=j1`);
-                if (!response.ok) {
+                const response = await axios.get(`https://wttr.in/${lat},${lon}?format=j1`);
+                if (response.status !== 200) {
                     throw new Error('Network response was not ok');
                 }
-                const data = await response.json();
+                const data = response.data;
                 setWeatherData(data);
+                setWeatherAppData(prevData => ({
+                    ...prevData,
+                    searched: {
+                        ...prevData.searched,
+                        [`${lat},${lon}`]: data,
+                    },
+                }));
             } catch (error) {
                 setError('Failed to fetch weather data.');
                 console.error('Error fetching weather data:', error);
@@ -28,9 +38,15 @@ export default function LocationDetailPage(): ReactElement {
         };
 
         if (lat && lon) {
-            fetchData();
+            const cachedData = weatherAppData.searched[`${lat},${lon}`];
+            if (cachedData) {
+                setWeatherData(cachedData);
+                setLoading(false);
+            } else {
+                fetchData();
+            }
         }
-    }, [lat, lon]);
+    }, [lat, lon, weatherAppData.searched, setWeatherAppData]);
 
     if (loading) {
         return <div className="flex justify-center items-center h-screen bg-gray-900 text-white">Your Searched Location Data is Loading...</div>;
